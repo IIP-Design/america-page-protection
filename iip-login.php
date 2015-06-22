@@ -63,7 +63,6 @@ setcookie( 'wp-postpass_' . COOKIEHASH, $hasher->HashPassword( wp_unslash( $_POS
 /**
  * Append query string to use for error handling
  */
- */
 $url = '';
 $q = '?auth=1';
 if( empty($_SERVER['QUERY_STRING']) ) {
