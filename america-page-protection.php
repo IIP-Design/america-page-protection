@@ -5,7 +5,7 @@
  Plugin Name: 	  America Page Protection
  Description:     This plugin handles authentication for password protected pages and adds basic error messaging.
  				  Needed due to enhanced security on production
- Version:         1.0.0
+ Version:         1.0.1
  Author:          Office of Design, Bureau of International Information Programs
  License:         GPL-2.0+
  Text Domain:     america
