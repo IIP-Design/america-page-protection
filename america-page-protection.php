@@ -33,7 +33,7 @@ function iip_page_password_form() {
 	global $post;
 
  	$msg = '';
- 	$url = plugin_dir_url( __FILE__ ) . 'iip-login.php?action=postpass';
+ 	$url = plugin_dir_url( __FILE__ ) . 'iip-check.php?action=postpass';
     $label = 'pwbox-'.( empty( $post->ID ) ? rand() : $post->ID );
    
     $form = '<form action="' . esc_url( $url ) . '" method="post"> <p>' . __( "To view this protected post, enter the password below:" ) . '</p>
@@ -42,6 +42,7 @@ function iip_page_password_form() {
 
    
 	if ( isset($_COOKIE['wp-postpass_' . COOKIEHASH]) && $_COOKIE['wp-postpass_' . COOKIEHASH] != $post->post_password) {
+	 	// only show error message if returning from login routine
 	 	if( isset($_REQUEST['auth']) && $_REQUEST['auth'] == 1 ) {
 	 		 // Translate and escape.
 			$msg = esc_html__( 'Sorry, your password is wrong. Please try again.', 'america' );
