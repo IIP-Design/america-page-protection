@@ -71,5 +71,6 @@ if( empty($_SERVER['QUERY_STRING']) ) {
 	$url .= strtok( wp_get_referer(), '?' ) . $q; 
 }
 
-wp_safe_redirect( $url );
+// wp_safe_redirect( $url );
+wp_safe_redirect( wp_get_referer() );
 exit();
