@@ -12,17 +12,6 @@
 /** Make sure that the WordPress bootstrap has run before continuing. */
 require(  $_SERVER['DOCUMENT_ROOT'] . '/wp/wp-load.php' );
 
-// Redirect to https login if forced to use SSL
-if ( force_ssl_admin() && ! is_ssl() ) {
-	if ( 0 === strpos($_SERVER['REQUEST_URI'], 'http') ) {
-		wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
-		exit();
-	} else {
-		wp_redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		exit();
-	}
-}
-
 nocache_headers();
 
 header('Content-Type: '.get_bloginfo('html_type').'; charset='.get_bloginfo('charset'));
@@ -71,6 +60,5 @@ if( empty($_SERVER['QUERY_STRING']) ) {
 	$url .= strtok( wp_get_referer(), '?' ) . $q; 
 }
 
-// wp_safe_redirect( $url );
-wp_safe_redirect( wp_get_referer() );
+wp_safe_redirect( $url );
 exit();

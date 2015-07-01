@@ -40,6 +40,17 @@ function iip_page_password_form() {
     <label for="' . $label . '">' . __( "Password:" ) . ' </label><input name="post_password" id="' . $label . '" type="password" size="20" maxlength="20" /><input type="submit" name="Submit" value="' . esc_attr__( "Submit" ) . '" />
     </form>'; 
 
+   
+	if ( isset($_COOKIE['wp-postpass_' . COOKIEHASH]) && $_COOKIE['wp-postpass_' . COOKIEHASH] != $post->post_password) {
+	 	// only show error message if returning from login routine
+	 	if( isset($_REQUEST['auth']) && $_REQUEST['auth'] == 1 ) {
+	 		 // Translate and escape.
+			$msg = esc_html__( 'Sorry, your password is wrong. Please try again.', 'america' );
 
+			// We have a cookie, but it doesn’t match the password.
+			$msg = "<p style='color:#C00;'>$msg</p>";
+		}
+	}
+ 	
     return $msg . $form;
 }
