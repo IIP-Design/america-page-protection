@@ -1,5 +1,5 @@
 {
-    "name": "iip-design/america-page-protection",
+    "name": "usstatedept/america-page-protection",
     "type": "wordpress-plugin",
     "description" : "Add password page protection to secured sites",
     "authors": [
