@@ -3,14 +3,25 @@
  * Process page protection
  *
  * Handles authentication for password protected pages. 
- * Needed due to enhanced security on production
- * Adapted from wp-login.php
+ * Needed due to enhanced security on production (wp_login.php is blocked)
+ * Adapted from wp-login.php v 3.8.10
  *
  * @package WordPress
  */
 
 /** Make sure that the WordPress bootstrap has run before continuing. */
-require(  $_SERVER['DOCUMENT_ROOT'] . '/wp/wp-load.php' );
+require(  $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' );
+
+// Redirect to https login if forced to use SSL
+if ( force_ssl_admin() && ! is_ssl() ) {
+	if ( 0 === strpos($_SERVER['REQUEST_URI'], 'http') ) {
+		wp_redirect( set_url_scheme( $_SERVER['REQUEST_URI'], 'https' ) );
+		exit();
+	} else {
+		wp_redirect( 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		exit();
+	}
+}
 
 nocache_headers();
 
@@ -25,14 +36,12 @@ if ( defined( 'RELOCATE' ) && RELOCATE ) { // Move flag is set
 		update_option( 'siteurl', $url );
 }
 
-//Set a cookie now to see if they are supported by the browser.
-$secure = ( 'https' === parse_url( site_url(), PHP_URL_SCHEME ) && 'https' === parse_url( home_url(), PHP_URL_SCHEME ) );
-setcookie( TEST_COOKIE, 'WP Cookie check', 0, COOKIEPATH, COOKIE_DOMAIN, $secure );
+// Set a cookie now to see if they are supported by the browser.
+setcookie(TEST_COOKIE, 'WP Cookie check', 0, COOKIEPATH, COOKIE_DOMAIN);
 if ( SITECOOKIEPATH != COOKIEPATH )
-	setcookie( TEST_COOKIE, 'WP Cookie check', 0, SITECOOKIEPATH, COOKIE_DOMAIN, $secure );
+	setcookie( TEST_COOKIE, 'WP Cookie check', 0, SITECOOKIEPATH, COOKIE_DOMAIN );
 
-
-require_once ABSPATH . WPINC . '/class-phpass.php';
+require_once ABSPATH . 'wp-includes/class-phpass.php';
 $hasher = new PasswordHash( 8, true );
 
 /**
@@ -46,8 +55,8 @@ $hasher = new PasswordHash( 8, true );
  * @param int $expires The expiry time, as passed to setcookie().
  */
 $expire = apply_filters( 'post_password_expires', time() + 10 * DAY_IN_SECONDS );
-$secure = ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) );
-setcookie( 'wp-postpass_' . COOKIEHASH, $hasher->HashPassword( wp_unslash( $_POST['post_password'] ) ), $expire, COOKIEPATH, COOKIE_DOMAIN, $secure );
+//$secure = ( 'https' === parse_url( home_url(), PHP_URL_SCHEME ) );
+setcookie( 'wp-postpass_' . COOKIEHASH, $hasher->HashPassword( wp_unslash( $_POST['post_password'] ) ), $expire, COOKIEPATH );
 
 /**
  * Append query string to use for error handling
@@ -62,3 +71,4 @@ if( empty($_SERVER['QUERY_STRING']) ) {
 
 wp_safe_redirect( $url );
 exit();
+

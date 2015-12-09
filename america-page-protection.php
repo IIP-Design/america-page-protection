@@ -33,7 +33,7 @@ function iip_page_password_form() {
 	global $post;
 
  	$msg = '';
- 	$url = plugin_dir_url( __FILE__ ) . 'iip-check.php?action=postpass';
+ 	$url = plugin_dir_url( __FILE__ ) . 'iip-check.php';
     $label = 'pwbox-'.( empty( $post->ID ) ? rand() : $post->ID );
    
     $form = '<form action="' . esc_url( $url ) . '" method="post"> <p>' . __( "To view this protected post, enter the password below:" ) . '</p>
