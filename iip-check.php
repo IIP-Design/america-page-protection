@@ -8,9 +8,8 @@
  *
  * @package WordPress
  */
-
 /** Make sure that the WordPress bootstrap has run before continuing. */
-require(  $_SERVER['DOCUMENT_ROOT'] . '/wp-load.php' );
+require(  $_SERVER['DOCUMENT_ROOT'] . '/wp/wp-load.php' );
 
 // Redirect to https login if forced to use SSL
 if ( force_ssl_admin() && ! is_ssl() ) {
